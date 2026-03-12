@@ -1,0 +1,154 @@
+*Acknowledgement:
+
+We would like to express our sincere gratitude to our project guide and faculty members for giving us the opportunity to work on the project titled “AI-Driven Medical Safety Assistant (MedSafe AI)”. Their guidance and encouragement helped us understand the practical aspects of applying programming concepts to solve real-world problems.
+We are also thankful to our institution, CGC University Mohali, for providing the necessary resources and environment that allowed us to successfully complete this project.
+
+* Index
+
+1. Introduction 
+2. Objective of project
+3. Tools and technologies used
+4. System Design
+5. Implementation 
+6. Code used
+7. Advantages 
+8. Limitations 
+9. Future Improvements
+10. Conclusion 
+
+1. Introduction: 
+
+With the increasing use of medicines, many people are unaware of possible drug interactions and basic symptom management. An AI-driven medical safety assistant can help users check medicine interactions and provide simple health guidance. This project aims to create a basic system that allows users to enter medicine names or symptoms and receive relevant safety information.
+
+2. Objective of the Project:
+
+(A) To create a simple medical assistant using Python.
+(B) To detect possible interactions between commonly used medicines.
+(C) To provide basic suggestions for common symptoms.
+(D) To design a simple user interface where users can input information easily.
+
+3. Tools and Technologies Used:
+
+Tool
+Purpose
+Python
+Programming language
+Anvil
+Web interface creation
+VS code
+Code editing
+Dictionary data structure
+Storing medicine interactions and symptoms
+
+4. System Design / Methodology:
+
+The system works in the following steps:
+
+The user enters the names of two medicines or a symptom.
+The program converts the input into lowercase for uniform comparison.
+The system checks the stored dictionary database.
+If a match is found, the program displays the interaction or suggestion.
+If no match is found, a default safety message is shown.
+
+flow:
+
+User Input → Process Input → Search Dictionary → Display Result
+
+5. Implementation:
+
+A dictionary is used to store medicine interaction pairs.
+Another dictionary stores symptoms and suggestions.
+The program retrieves results using the get() method.
+The interface is created using Anvil with input fields and buttons.
+
+6. Code used:
+
+from ._anvil_designer import MainFormTemplate
+from anvil import *
+import anvil.server
+
+
+class MainForm(MainFormTemplate):
+
+  def __init__(self, **properties):
+    self.init_components(**properties)
+
+  @handle("analyze_btn", "click")
+  def analyze_btn_click(self, **event_args):
+
+    name = self.name_box.text
+    symptoms = self.symptom_box.text.lower()
+
+    if symptoms == "":
+      alert("Please enter symptoms")
+      return
+
+    result = anvil.server.call("analyze_symptoms", name, symptoms)
+    user_symptoms = {
+
+      "headache": "You may take paracetamol for mild headache. Stay hydrated and rest.",
+      "fever": "Paracetamol or ibuprofen may help reduce fever. Drink plenty of fluids.",
+      "cough": "Warm fluids and cough syrup may help. If cough persists, consult a doctor.",
+      "cold": "Rest, hydration, and antihistamines may help relieve symptoms.",
+      "stomach pain": "Avoid heavy foods. If severe pain occurs, consult a doctor.",
+      "nausea": "Drink small amounts of water and avoid oily foods.",
+      "dizziness": "Sit or lie down immediately and hydrate. If frequent, seek medical advice.",
+      "sore throat": "Warm salt water gargles and lozenges may help.",
+      "muscle pain": "Rest and mild pain relievers like ibuprofen may help.",
+      "fatigue": "Ensure proper sleep, hydration, and balanced nutrition."}
+    result= user_symptoms.get(symptoms) or "No Known Symptom, Please Consult a Doctor"
+    
+
+    
+
+    self.result_box.text = result
+
+  @handle("button_1","click")
+  def button_1_click(self,**event_args):
+    medicine_interactions = {("aspirin", "warfarin"):"Warning! High risk of bleeding.",
+                             ("paracetamol","ibuprofen"):"Usually safe in normal doses.",
+                             ("metformin","insulin"):"Monitor blood sugar level carefully",
+                             ("aspirin", "ibuprofen"): " Ibuprofen may reduce aspirin's heart protection.",
+                             ("warfarin", "ibuprofen"): " Increased risk of bleeding.",
+                             ("warfarin", "paracetamol"): "Use cautiously. May increase bleeding risk if taken often.",
+                             ("metformin", "alcohol"): " Can increase risk of lactic acidosis.",
+                             ("insulin", "alcohol"): " Alcohol may cause low blood sugar.",
+                             ("aspirin", "alcohol"): " Increased stomach bleeding risk.",
+                             ("ibuprofen", "alcohol"): " May irritate stomach and cause ulcers.",
+                             ("aspirin", "ibuprofen"): " Ibuprofen may reduce aspirin's heart protection.",
+                             ("warfarin", "ibuprofen"): " Increased risk of bleeding.",
+                             ("warfarin", "paracetamol"): "Use cautiously. May increase bleeding risk if taken often.",
+                             ("metformin", "alcohol"): " Can increase risk of lactic acidosis.",
+                             ("insulin", "alcohol"): " Alcohol may cause low blood sugar.",
+                             ("aspirin", "alcohol"): " Increased stomach bleeding risk.",
+                             ("ibuprofen", "alcohol"): " May irritate stomach and cause ulcers."}
+                             
+    med1= self.interaction_box_1.text.lower()
+    med2= self.interaction_box_2.text.lower()
+    result1= medicine_interactions.get((med1,med2)) or medicine_interactions.get((med2,med1)) or "No Known Interaction Found"
+     
+    self.result_1.text= result1
+
+7. Advantages:
+
+Easy to use interface
+Provides quick medicine interaction information
+Helps users understand common symptoms
+Demonstrates basic AI-assisted decision support
+
+8. Limitations:
+
+Limited medicine database
+Does not replace professional medical advice
+Only supports predefined inputs.
+
+9. Future Improvements:
+
+Add a larger medicine database
+Integrate real medical APIs
+Use machine learning models for better predictions
+Improve the website interface
+
+10. Conclusion:
+
+The AI-Driven Medical Safety Assistant successfully demonstrates how programming can be used to provide healthcare safety information. The project highlights the use of Python and web tools to build a simple yet useful system that helps users check medicine interactions and understand basic symptoms.
